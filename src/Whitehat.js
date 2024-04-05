@@ -12,10 +12,11 @@ export default function Whitehat(props){
     var isZoomed = false;
 
     //TODO: change the line below to change the size of the white-hat maximum bubble size
-    const maxRadius = width/100;
+    // \\for example I change it from 100 t0 50 for larger circle \\
+    const maxRadius = width/75;
 
     //albers usa projection puts alaska in the corner
-    //this automatically convert latitude and longitude to coordinates on the svg canvas
+    //this automatically convert latitude and longitude to coordinates on the svg canvas//
     const projection = d3.geoAlbersUsa()
         .translate([width/2,height/2]);
 
@@ -31,6 +32,8 @@ export default function Whitehat(props){
 
     //This is the main loop that renders the code once the data loads
     //TODO: edit or replace this code to create your white-hat version of the map view; for example, change the color map based on colorbrewer2, 
+    // I will change :
+    //1-
     const mapGroupSelection = useMemo(()=>{
         //wait until the svg is rendered and data is loaded
         if(svg !== undefined & props.map !== undefined & props.data !== undefined){
@@ -49,14 +52,18 @@ export default function Whitehat(props){
             //color map scale, scales numbers to a smaller range to use with a d3 color scale
             //we're using 1-0 to invert the red-yellow-green color scale
             //so red is bad (p.s. this is not a good color scheme still)
+            // I change the color range from [0,1] to [0.5,1] red=0 and yellow is 0.5 and 1 is green
+            // another way is using ===>>> const colorMap = d3.interpolateHslLong("green", "blue");
             const stateScale = d3.scaleLinear()
                 .domain([stateMin,stateMax])
-                .range([1,0]);
+                .range([0.5,2]);
 
             //TODO: EDIT HERE TO CHANGE THE COLOR SCHEME
             //this function takes a number 0-1 and returns a color
-            const colorMap = d3.interpolateRdYlGn;
 
+
+            const colorMap = d3.interpolateRdYlGn;
+///         const colorMap = d3.interpolateHslLong("green", "blue");
             //this set of functions extracts the features given the state name from the geojson
             function getCount(name){
                 //map uses full name, dataset uses abreviations
