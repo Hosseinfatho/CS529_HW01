@@ -15,7 +15,9 @@ export default function WhiteHatStats(props){
     const radius = 10;
 
 
-    //TODO: modify or replace the code below to draw a more truthful or insightful representation of the dataset. This other representation could be a histogram, a stacked bar chart, etc.
+    //TODO: modify or replace the code below to draw a more truthful or insightful representation of the dataset. 
+    //This other representation could be 
+    ///////////////////////////////////////a histogram, a stacked bar chart, etc.
     //this loop updates when the props.data changes or the window resizes
     //we can edit it to also use props.brushedState if you want to use linking
     useEffect(()=>{
@@ -24,7 +26,17 @@ export default function WhiteHatStats(props){
 
         //aggregate gun deaths by state
         const data = props.data.states;
-        
+        ///
+            
+
+        ///
+
+
+
+
+
+
+
         //get data for each state
         const plotData = [];
         for(let state of data){
@@ -37,7 +49,7 @@ export default function WhiteHatStats(props){
             }
             plotData.push(entry)
         }
-
+/////////////////////////////////////////////////////
         //get transforms for each value into x and y coordinates
         let xScale = d3.scaleLinear()
             .domain(d3.extent(plotData,d=>d.easeOfDrawing))
@@ -49,23 +61,24 @@ export default function WhiteHatStats(props){
 
         //draw a line showing the mean values across the curve
         //this probably isn't actually regression
-        const regressionLine = [];
-        for(let i = 0; i <= 10; i+= 1){
-            let pvals = plotData.filter(d => Math.abs(d.easeOfDrawing - i) <= .5);
-            let meanY = 0;
-            if(pvals.length > 0){
-                for(let entry of pvals){
-                    meanY += entry.count/pvals.length
-                }
-            }
-            let point = [xScale(i),yScale(meanY)]
-            regressionLine.push(point)
-        }
-        
+                           // const regressionLine = [];
+                            //I remove these ten lines to remove middle line
+                            // for(let i = 0; i <= 10; i+= 1){
+                            //     let pvals = plotData.filter(d => Math.abs(d.easeOfDrawing - i) <= .5);
+                            //     let meanY = 0;
+                            //     if(pvals.length > 0){
+                            //         for(let entry of pvals){
+                            //             meanY += entry.count/pvals.length
+                            //         }
+                            //     }
+                            //     let point = [xScale(i),yScale(meanY)]
+                            //     regressionLine.push(point)
+                            // }
+                            
         //scale color by gender ratio for no reason
         let colorScale = d3.scaleDiverging()
             .domain([0,.5,1])
-            .range(['magenta','white','navy']);
+            .range(['red','green','yellow']);
 
         //draw the circles for each state
         svg.selectAll('.dot').remove();
@@ -74,7 +87,7 @@ export default function WhiteHatStats(props){
             .attr('cy',d=> yScale(d.count))
             .attr('cx',d=>xScale(d.easeOfDrawing))
             .attr('fill',d=> colorScale(d.genderRatio))
-            .attr('r',10)
+            .attr('r',5)
             .on('mouseover',(e,d)=>{
                 let string = d.name + '</br>'
                     + 'Gun Deaths: ' + d.count + '</br>'
@@ -88,12 +101,12 @@ export default function WhiteHatStats(props){
             });
            
         //draw the line
-        svg.selectAll('.regressionLine').remove();
-        svg.append('path').attr('class','regressionLine')
-            .attr('d',d3.line().curve(d3.curveBasis)(regressionLine))
-            .attr('stroke-width',5)
-            .attr('stroke','black')
-            .attr('fill','none');
+                        // svg.selectAll('.regressionLine').remove();
+                        // svg.append('path').attr('class','regressionLine')
+                        //     .attr('d',d3.line().curve(d3.curveBasis)(regressionLine))
+                        //     .attr('stroke-width',5)
+                        //     .attr('stroke','black')
+                        //     .attr('fill','none');
 
         //change the title
         const labelSize = margin/2;
@@ -135,7 +148,10 @@ export default function WhiteHatStats(props){
     );
 }
 //END of TODO #1.
+/////////////////////////////////////////////////////////////////////////
 
+
+//////////////////////
  
 const drawingDifficulty = {
     'IL': 9,
