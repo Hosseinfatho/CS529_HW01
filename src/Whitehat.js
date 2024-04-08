@@ -9,11 +9,12 @@ export default function Whitehat(props){
     //tTip automatically attaches a div of the class 'tooltip' if it doesn't already exist
     //this will automatically resize when the window changes so passing svg to a useeffect will re-trigger
     const [svg, height, width, tTip] = useSVGCanvas(d3Container);
-    var isZoomed = false;
+    //\\change false to true to active zoom in state and map
+    var isZoomed = true;
 
     //TODO: change the line below to change the size of the white-hat maximum bubble size
-    // \\for example I change it from 100 t0 50 for larger circle \\
-    const maxRadius = width/75;
+    // \\for example I change it from 100 t0 120 for smaller circle \\
+    const maxRadius = width/120;
 
     //albers usa projection puts alaska in the corner
     //this automatically convert latitude and longitude to coordinates on the svg canvas//
@@ -56,13 +57,13 @@ export default function Whitehat(props){
             // another way is using ===>>> const colorMap = d3.interpolateHslLong("green", "blue");
             const stateScale = d3.scaleLinear()
                 .domain([stateMin,stateMax])
-                .range([0.5,2]);
+                .range([0,1]);
 
             //TODO: EDIT HERE TO CHANGE THE COLOR SCHEME
             //this function takes a number 0-1 and returns a color
 
 
-            const colorMap = d3.interpolateRdYlGn;
+            const colorMap = d3.interpolateBlues;
 ///         const colorMap = d3.interpolateHslLong("green", "blue");
             //this set of functions extracts the features given the state name from the geojson
             function getCount(name){
