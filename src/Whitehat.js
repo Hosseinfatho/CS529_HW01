@@ -64,7 +64,7 @@ export default function Whitehat(props){
 
 
             const colorMap = d3.interpolateBlues;
-///         const colorMap = d3.interpolateHslLong("green", "blue");
+///         const colorMap = d3.interpolateHslLong( "blue");
             //this set of functions extracts the features given the state name from the geojson
             function getCount(name){
                 //map uses full name, dataset uses abreviations
@@ -84,12 +84,16 @@ export default function Whitehat(props){
             function getStateColor(d){
                 return colorMap(getStateVal(d.properties.NAME))
             }
+            // let populationState = '';
 
+            // populationState = entry[0].population;
+            // return getEncodedFeature(entry[0]);
             //clear earlier drawings
             svg.selectAll('g').remove();
 
             //OPTIONAL: EDIT THIS TO CHANGE THE DETAILS OF HOW THE MAP IS DRAWN
             //draw borders from map and add tooltip
+            
             let mapGroup = svg.append('g').attr('class','mapbox');
             mapGroup.selectAll('path').filter('.state')
                 .data(props.map.features).enter()
@@ -99,7 +103,8 @@ export default function Whitehat(props){
                 .attr('d',geoGenerator)
                 .attr('fill',getStateColor)
                 .attr('stroke','black')
-                .attr('stroke-width',.1)
+                //\\increase border width from .1 to .5
+                .attr('stroke-width',0.5)
                 .on('mouseover',(e,d)=>{
                     let state = cleanString(d.properties.NAME);
                     //this updates the brushed state
@@ -108,8 +113,11 @@ export default function Whitehat(props){
                     }
                     let sname = d.properties.NAME;
                     let count = getCount(sname);
-                    let text = sname + '</br>'
-                        + 'Gun Deaths: ' + count;
+                    let text = sname + '</br>' 
+                    + 'Gun Deaths: ' + count + '</br>'
+                    //\\ I should think about state population
+                    + 'Death per Million:'+(count)*10000; 
+                   
                     tTip.html(text);
                 }).on('mousemove',(e)=>{
                     //see app.js for the helper function that makes this easier
@@ -120,7 +128,9 @@ export default function Whitehat(props){
                 });
 
 
-            //TODO: replace or edit the code below to change the city marker being used. Hint: think of the cityScale range (perhaps use area rather than radius). 
+            //TODO: replace or edit the code below to change the city marker being used.
+            // Hint: 
+            //think of the cityScale range (perhaps use area rather than radius). 
             //draw markers for each city
             const cityData = props.data.cities
             const cityMax = d3.max(cityData.map(d=>d.count));
@@ -129,7 +139,7 @@ export default function Whitehat(props){
                 .range([0,maxRadius]);
 
             mapGroup.selectAll('.city').remove();
-
+           
             //TODO: Add code for a tooltip when you mouse over the city (hint: use the same code for the state tooltip events .on... and modify what is used for the tTip.html)
             //OPTIONAL: change the color or opacity
             mapGroup.selectAll('.city')
