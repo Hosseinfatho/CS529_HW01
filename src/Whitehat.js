@@ -125,6 +125,8 @@ export default function Whitehat(props){
             //TODO: replace or edit the code below to change the city marker being used. 
             //Hint: think of the cityScale range (perhaps use area rather than radius). 
             //draw markers for each city
+            console.log("prpos")
+
             const cityData = props.data.cities
             console.log("city")
             const cityMax = d3.max(cityData.map(d=>d.count));
