@@ -79,7 +79,9 @@ export default function WhiteHatStats(props){
             .attr('fill', 'pink')
             .on('mouseover', (e, d) => {
                 const string = `${d.data.name}</br>Female Deaths: ${d.data.female_count}`;
+                
                 props.ToolTip.moveTTipEvent(tTip, e);
+                
                 tTip.html(string);
             })
             .on('mousemove', (e) => {
