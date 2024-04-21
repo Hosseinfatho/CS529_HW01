@@ -8,7 +8,7 @@ export default function WhiteHatStats(props){
     const d3Container = useRef(null);
     const [svg, height, width, tTip] = useSVGCanvas(d3Container);
 
-    const margin = { top: 60, right: 30, bottom: 60, left: 60 };
+    const margin = { top: 60, right: 30, bottom: 100, left: 60 };
 
     useEffect(()=>{
         if (!svg || !props.data) return;
@@ -21,8 +21,10 @@ export default function WhiteHatStats(props){
                 'name': state.state,
                 'male_count': state.male_count,
                 'female_count': state.count - state.male_count // Assuming count is total
+              
             };
         });
+        const  keys = ['male_count', 'female_count'];
 
         // Define scales
         const xScale = d3.scaleBand()
@@ -34,16 +36,18 @@ export default function WhiteHatStats(props){
             .domain([0, d3.max(plotData, d => d.male_count + d.female_count)])
             .nice()
             .range([height - margin.bottom, margin.top]);
+        ////
+        
+        ////
 
-        // Stack generator
-        const stack = d3.stack()
-            .keys(['male_count', 'female_count'])
-            .order(d3.stackOrderNone)
-            .offset(d3.stackOffsetNone);
+        
+        //  create stack bar base on two keys male and female Stack generator
+        const stack = d3.stack().keys(['male_count', 'female_count'])
+
 
         const stackedData = stack(plotData);
-
-        // Draw male deaths bars
+console.log(plotData)
+        // Draw male from plotdata it is first key in console.log
         svg.selectAll('.male-bars').remove();
         const maleBars = svg.selectAll('.male-bars')
             .data(stackedData[0])
@@ -55,7 +59,8 @@ export default function WhiteHatStats(props){
             .attr('width', xScale.bandwidth())
             .attr('fill', 'steelblue')
             .on('mouseover', (e, d) => {
-                const string = `${d.data.name}</br>Male Deaths: ${d.data.male_count}`;
+                const string = `${d.data.name}</br>Male Deaths: ${d.data.male_count}`
+               
                 props.ToolTip.moveTTipEvent(tTip, e);
                 tTip.html(string);
             })
@@ -91,7 +96,7 @@ export default function WhiteHatStats(props){
                 props.ToolTip.hideTTip(tTip);
             });
 
-        // Draw x-axis
+        //Draw x-axis
         svg.selectAll('.x-axis').remove();
         svg.append('g')
             .attr('class', 'x-axis')
@@ -99,7 +104,10 @@ export default function WhiteHatStats(props){
             .call(d3.axisBottom(xScale))
             .selectAll('text')
             .attr('dy', '1em')
-            .style('text-anchor', 'middle');
+            .style('text-anchor', 'middle')
+            .attr('transform', 'rotate(90)')
+            .attr('x', 45) // Adjust positioning after rotation
+            .attr('y', -10); 
 
         // Draw y-axis
         svg.selectAll('.y-axis').remove();
@@ -109,18 +117,47 @@ export default function WhiteHatStats(props){
             .call(d3.axisLeft(yScale));
 
         // Change the title
-        const labelSize = margin.top / 2;
-        svg.selectAll('text').remove();
-        svg.append('text')
-            .attr('x', width / 2)
-            .attr('y', labelSize)
-            .attr('text-anchor', 'middle')
-            .attr('font-size', labelSize)
-            .attr('font-weight', 'bold')
-            .text('Gun Deaths by State');
+        // const labelSize = margin.top / 2;
+        // svg.selectAll('text').remove();
+        // svg.append('text')
+        //     .attr('x', width / 2)
+        //     .attr('y', labelSize)
+        //     .attr('text-anchor', 'middle')
+        //     .attr('font-size', labelSize)
+        //     .attr('font-weight', 'bold')
+        //     .text('Gun Deaths by State');
+              
+            // add x-bar and y bar chart information
+         var   yMax = d3.max(plotData, d => {
+                // Is there a better way to do this than calling each key?
+                var val = 0
+                for(var k of keys){
+                  val += d[k]
+                }
+                return val
+              })
+          var    y = d3.scaleLinear().domain([0, yMax]).range([height,0])
+          var yAxis = d3.axisLeft(y)
+              svg.append('g')
+              .call(yAxis)
+
+            // creat a box color for barchart to show information female and male      //
+            function drawStateLegend(){
+
+                let bounds = svg.node().getBBox();
+    
+                svg.append("rect").attr('class','barChartLegendRect').attr("x", bounds.x + bounds.width - 200).attr("y",bounds.y).attr("width", 20).attr("height", 20).style("fill", "steelblue")
+                svg.append("rect").attr('class','barChartLegendRect').attr("x", bounds.x + bounds.width - 200).attr("y",bounds.y + 50).attr("width", 20).attr("height", 20).style("fill", "pink")
+                svg.append("text").attr('class','barChartLegendRectText').attr("x", bounds.x + bounds.width - 160).attr("y",bounds.y + 10).text("Male victims").attr("alignment-baseline","middle")
+                svg.append("text").attr('class','barChartLegendRectText').attr("x", bounds.x + bounds.width - 160).attr("y",bounds.y + 60).text("Female victims").attr("alignment-baseline","middle")
+            }
+    
+            drawStateLegend()
+
 
     }, [props.data, svg]);
 
+    
     return (
         <div
             className={"d3-component"}

@@ -43,6 +43,8 @@ export default function Whitehat(props){
         if(svg !== undefined & props.map !== undefined & props.data !== undefined){
          let populationState = '';
             const stateData = props.data.states;
+            const citiesData= props.data;
+            console.log(citiesData)
 
             //EDIT THIS TO CHANGE WHAT IS USED TO ENCODE COLOR
             const getEncodedFeature = d => d.count
@@ -110,8 +112,9 @@ export default function Whitehat(props){
                     let sname = d.properties.NAME;
                     let count = getCount(sname); 
                     let text = sname + '</br>'
+                        + 'populationState: ' + populationState + "</br>"
                         + 'Gun Deaths: ' + count + "</br>"
-                        + "Population deaths per 1000K: " + (count/populationState)*1000000;
+                        + "Deaths per 1 million: " + (count/populationState)*1000000;
                     tTip.html(text);
                 }).on('mousemove',(e)=>{
                     //see app.js for the helper function that makes this easier
@@ -163,8 +166,10 @@ export default function Whitehat(props){
                 })
                 .on('mouseover', (e, d) => {
                     let cityName = d.city;
-                    let count = d.count;
-                    let text = cityName + '</br>' + 'City Count: ' + count;
+                    let Citycount = d.count;
+                    let text = cityName + '</br>' + 'City Count: ' + Citycount+"</br>"
+                    + 'State: ' + d.state + "</br>"
+                     
                     tTip.html(text);
                 }).on('mousemove', (e) => {
                     props.ToolTip.moveTTipEvent(tTip, e);
