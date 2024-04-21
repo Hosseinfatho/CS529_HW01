@@ -14,13 +14,14 @@ export default function WhiteHatStats(props){
         if (!svg || !props.data) return;
 
         const data = props.data.states;
-
+        console.log("population",data)
         // Prepare data in suitable format for stacking
         const plotData = data.map(state => {
             return {
                 'name': state.state,
                 'male_count': state.male_count,
-                'female_count': state.count - state.male_count // Assuming count is total
+                'female_count': state.count - state.male_count, // Assuming count is total
+                'population':state.population
               
             };
         });
@@ -30,11 +31,10 @@ export default function WhiteHatStats(props){
         const xScale = d3.scaleBand()
             .domain(plotData.map(d => d.name))
             .range([margin.left, width - margin.right])
-            .padding(0.1);
+            .padding(0.05);
 
         const yScale = d3.scaleLinear()
             .domain([0, d3.max(plotData, d => d.male_count + d.female_count)])
-            .nice()
             .range([height - margin.bottom, margin.top]);
         ////
         
@@ -59,7 +59,8 @@ console.log(plotData)
             .attr('width', xScale.bandwidth())
             .attr('fill', 'steelblue')
             .on('mouseover', (e, d) => {
-                const string = `${d.data.name}</br>Male Deaths: ${d.data.male_count}`
+                const string = `${d.data.name}</br>Male Deaths: ${d.data.male_count}`+"</br>"
+                + 'Per Million Population: ' + (d.data.male_count)/(parseInt(d.data.population))*1000000;
                
                 props.ToolTip.moveTTipEvent(tTip, e);
                 tTip.html(string);
@@ -83,8 +84,9 @@ console.log(plotData)
             .attr('width', xScale.bandwidth())
             .attr('fill', 'pink')
             .on('mouseover', (e, d) => {
-                const string = `${d.data.name}</br>Female Deaths: ${d.data.female_count}`;
-                
+                const string = `${d.data.name}</br>Female Deaths: ${d.data.female_count}`+"</br>"
+                + 'Per Million Population: ' + (d.data.female_count)/(parseInt(d.data.population))*1000000;
+               
                 props.ToolTip.moveTTipEvent(tTip, e);
                 
                 tTip.html(string);
