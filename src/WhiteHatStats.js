@@ -99,7 +99,7 @@ console.log(plotData)
             });
 
         //Draw x-axis
-        svg.selectAll('.x-axis').remove();
+       // svg.selectAll('.x-axis').remove();
         svg.append('g')
             .attr('class', 'x-axis')
             .attr('transform', `translate(0,${height - margin.bottom})`)
@@ -119,15 +119,15 @@ console.log(plotData)
             .call(d3.axisLeft(yScale));
 
         // Change the title
-        // const labelSize = margin.top / 2;
-        // svg.selectAll('text').remove();
-        // svg.append('text')
-        //     .attr('x', width / 2)
-        //     .attr('y', labelSize)
-        //     .attr('text-anchor', 'middle')
-        //     .attr('font-size', labelSize)
-        //     .attr('font-weight', 'bold')
-        //     .text('Gun Deaths by State');
+        const labelSize = margin.top / 2;
+        //svg.selectAll('text').remove();
+        svg.append('text')
+            .attr('x', width / 2)
+            .attr('y', labelSize+5)
+            .attr('text-anchor', 'middle')
+            .attr('font-size', labelSize)
+            .attr('font-weight', 'bold')
+            .text('Gun Deaths by State');
               
             // add x-bar and y bar chart information
          var   yMax = d3.max(plotData, d => {
