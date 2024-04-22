@@ -142,8 +142,11 @@ export default function Whitehat(props){
             //TODO: Add code for a tooltip when you mouse over the city (hint: use the same code for the state tooltip events .on... and modify what is used for the tTip.html)
             //OPTIONAL: change the color or opacity
             
-            const cityColorScale = scaleSequential(interpolateViridis)
-                .domain([0, cityMax]); // Set the domain based on the data range
+            // const cityColorScale = scaleSequential(d3.interpolateGreens)
+            //     .domain([0, cityMax]); // Set the domain based on the data range
+            const cityColorScale = d3.scaleDiverging()
+                .domain([0,.5,cityMax])
+                .range(['#ffffb2','#fd8d3c','#bd0026'])
             mapGroup.selectAll('.city')
                 .data(cityData).enter()
                 .append('circle').attr('class','city')
@@ -151,7 +154,9 @@ export default function Whitehat(props){
                 .attr('cx',d=> projection([d.lng,d.lat])[0])
                 .attr('cy',d=> projection([d.lng,d.lat])[1])
                 .attr('r',d=>cityScale(d.count))
-                .attr('opacity',2)                
+                .attr('opacity',2)   
+                .attr('stroke','black')
+                .attr('stroke-width',1)             
                 .attr('fill', d => cityColorScale(d.count))
                 .on('mouseover', function (event, d) {
                     // Show tooltip on mouseover

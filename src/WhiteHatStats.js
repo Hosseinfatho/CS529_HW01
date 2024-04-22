@@ -82,7 +82,7 @@ console.log(plotData)
             .attr('y', d => yScale(d[1]))
             .attr('height', d => yScale(d[0]) - yScale(d[1]))
             .attr('width', xScale.bandwidth())
-            .attr('fill', 'pink')
+            .attr('fill', '#fd8d3c')
             .on('mouseover', (e, d) => {
                 const string = `${d.data.name}</br>Female Deaths: ${d.data.female_count}`+"</br>"
                 + 'Per Million Population: ' + (d.data.female_count)/(parseInt(d.data.population))*1000000;
@@ -149,7 +149,7 @@ console.log(plotData)
                 let bounds = svg.node().getBBox();
     
                 svg.append("rect").attr('class','barChartLegendRect').attr("x", bounds.x + bounds.width - 200).attr("y",bounds.y).attr("width", 20).attr("height", 20).style("fill", "steelblue")
-                svg.append("rect").attr('class','barChartLegendRect').attr("x", bounds.x + bounds.width - 200).attr("y",bounds.y + 50).attr("width", 20).attr("height", 20).style("fill", "pink")
+                svg.append("rect").attr('class','barChartLegendRect').attr("x", bounds.x + bounds.width - 200).attr("y",bounds.y + 50).attr("width", 20).attr("height", 20).style("fill", "#fd8d3c")
                 svg.append("text").attr('class','barChartLegendRectText').attr("x", bounds.x + bounds.width - 160).attr("y",bounds.y + 10).text("Male victims").attr("alignment-baseline","middle")
                 svg.append("text").attr('class','barChartLegendRectText').attr("x", bounds.x + bounds.width - 160).attr("y",bounds.y + 60).text("Female victims").attr("alignment-baseline","middle")
             }
