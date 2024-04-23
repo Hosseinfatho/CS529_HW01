@@ -79,7 +79,12 @@ function App() {
                 style={{'height': '100%','width':'14em','display':'inline-block','verticalAlign':'text-bottom'}}
               >
                 <h1>{'Instructions'}</h1>
-                <p>{'Click on each state to zoom and unzoom'}</p>
+                <p>{'1- Alaska state moved to the bottom and Left to better Map show'}</p>
+                <p>{'2- Click on each state to zoom and unzoom'}</p>
+                <p>{'3- tooltip show you number of Gun death in state and cities'}</p>
+                <p>{'4- Stacked Bar chart showes the male and female for each state'}</p>
+                
+
               </div>
             </div>
             <div style={{'height': '49%','width':'99%'}}>
